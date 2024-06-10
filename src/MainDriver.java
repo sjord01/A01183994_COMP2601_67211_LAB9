@@ -5,10 +5,19 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
+/**
+ * The MainDriver class is responsible for reading data from a CSV file to
+ * create BeatleAlbum objects. It provides methods to filter and display albums
+ * based on various criteria.
+ * 
+ * @author Samson James Ordonez
+ * @version 1.0
+ */
+
 public class MainDriver {
 	private static final String FILEPATH_ALBUM = "src//beatles_vinyl.csv";
 	private static final String DELIMETER_ALBUM = ",";
-	
+
 	private static final int POSITION_ID = 0;
 	private static final int POSITION_TITLE = 1;
 	private static final int POSITION_ACQUIRED = 2;
@@ -23,6 +32,10 @@ public class MainDriver {
 
 	}
 
+	/**
+	 * Initializes the process of reading album data from the CSV file and
+	 * performing various searches.
+	 */
 	public void init() {
 		List<BeatleAlbum> albums = new ArrayList<>();
 		String filePathCSV = FILEPATH_ALBUM;
@@ -34,7 +47,7 @@ public class MainDriver {
 				String[] data = line.split(delimeter);
 				try {
 					if (validateArray(data)) {
-						BeatleAlbum album = new BeatleAlbum(data[POSITION_ID], data[POSITION_TITLE], 
+						BeatleAlbum album = new BeatleAlbum(data[POSITION_ID], data[POSITION_TITLE],
 								Boolean.parseBoolean(data[POSITION_ACQUIRED]), data[POSITION_LABEL],
 								data[POSITION_PRESSING], data[POSITION_SOUND], data[POSITION_CATNO]);
 						albums.add(album);
@@ -47,7 +60,7 @@ public class MainDriver {
 			e.printStackTrace();
 		}
 
-		//Searches
+		// Searches
 		displayAlbumsByTitle(albums, "Abbey Road");
 		displayAlbumsByLabel(albums, "rainbow no brackets");
 		displayAlbumsNotAcquired(albums);
@@ -56,6 +69,12 @@ public class MainDriver {
 
 	}
 
+	/**
+	 * Displays all albums with the specified title.
+	 *
+	 * @param albums the list of albums to search
+	 * @param title  the title to search for
+	 */
 	private static void displayAlbumsByTitle(List<BeatleAlbum> albums, final String title) {
 		if ((validateList(albums)) && BeatleAlbum.validateString(title)) {
 			List<BeatleAlbum> result = albums.stream().filter(album -> album.getTitle().equalsIgnoreCase(title))
@@ -66,6 +85,12 @@ public class MainDriver {
 		}
 	}
 
+	/**
+	 * Displays all albums with the specified label.
+	 *
+	 * @param albums the list of albums to search
+	 * @param label  the label to search for
+	 */
 	private static void displayAlbumsByLabel(List<BeatleAlbum> albums, final String label) {
 		if ((validateList(albums)) && BeatleAlbum.validateString(label)) {
 			List<BeatleAlbum> result = albums.stream().filter(album -> album.getLabel().equalsIgnoreCase(label))
@@ -76,6 +101,11 @@ public class MainDriver {
 		}
 	}
 
+	/**
+	 * Displays all albums that have not been acquired.
+	 *
+	 * @param albums the list of albums to search
+	 */
 	private static void displayAlbumsNotAcquired(List<BeatleAlbum> albums) {
 		if (validateList(albums)) {
 			List<BeatleAlbum> result = albums.stream().filter(album -> !album.isAcquired())
@@ -86,6 +116,14 @@ public class MainDriver {
 		}
 	}
 
+	/**
+	 * Displays all albums with the specified title, label, and acquisition status.
+	 *
+	 * @param albums   the list of albums to search
+	 * @param title    the title to search for
+	 * @param label    the label to search for
+	 * @param acquired the acquisition status to search for
+	 */
 	private static void displayAlbumsByTitleLabelAcquired(List<BeatleAlbum> albums, String title, String label,
 			boolean acquired) {
 		if (validateList(albums) && BeatleAlbum.validateString(title) && BeatleAlbum.validateString(label)) {
@@ -100,6 +138,13 @@ public class MainDriver {
 		}
 	}
 
+	/**
+	 * Displays all albums with the specified pressing and sound quality.
+	 *
+	 * @param albums   the list of albums to search
+	 * @param pressing the pressing to search for
+	 * @param sound    the sound quality to search for
+	 */
 	private static void displayAlbumsByPressingAndSound(List<BeatleAlbum> albums, String pressing, String sound) {
 		List<BeatleAlbum> result = albums.stream().filter(
 				album -> album.getPressing().equalsIgnoreCase(pressing) && album.getSound().equalsIgnoreCase(sound))
